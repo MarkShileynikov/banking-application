@@ -2,6 +2,7 @@ package com.example.bankingapplication.presentation.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,9 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.bankingapplication.R
 import com.example.bankingapplication.domain.entity.Transaction
 import com.example.bankingapplication.presentation.components.AccountCard
@@ -39,9 +40,10 @@ import com.example.bankingapplication.ui.theme.Grey
 import com.example.bankingapplication.ui.theme.LightGrey
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview(showBackground = true)
 @Composable
-fun RecentTransactionsScreen() {
+fun RecentTransactionsScreen(
+    navController: NavHostController
+) {
     val transactionList = listOf(
         Transaction(
             company = "OOO Company",
@@ -121,6 +123,9 @@ fun RecentTransactionsScreen() {
                     fontSize = 16.sp,
                     modifier = Modifier
                         .padding(top = 16.dp)
+                        .clickable {
+                            navController.navigate("all_transactions_screen")
+                        }
                 )
             }
             Card(
