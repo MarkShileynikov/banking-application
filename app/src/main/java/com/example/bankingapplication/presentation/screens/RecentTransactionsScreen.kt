@@ -146,12 +146,10 @@ fun RecentTransactionsScreen() {
                                 .padding(start = 16.dp, end = 16.dp)
                         )
                     }
-
                 }
             }
         }
     }
-
 }
 
 
