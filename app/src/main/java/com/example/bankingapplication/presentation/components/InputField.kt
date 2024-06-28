@@ -20,9 +20,12 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InputField(header: String) {
+fun InputField(
+    header: String,
+    inputText: String
+) {
     var text by remember {
-        mutableStateOf("")
+        mutableStateOf(inputText)
     }
     Text(
         text = header,

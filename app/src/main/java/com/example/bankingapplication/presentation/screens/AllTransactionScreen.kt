@@ -2,6 +2,7 @@ package com.example.bankingapplication.presentation.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,9 +17,15 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -33,14 +40,19 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.bankingapplication.R
 import com.example.bankingapplication.domain.entity.Transaction
+import com.example.bankingapplication.presentation.components.BlueButton
 import com.example.bankingapplication.presentation.components.TransactionCard
 import com.example.bankingapplication.ui.theme.Grey
 import com.example.bankingapplication.ui.theme.LightGrey
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AllTransactionsScreen(
+fun AllTransactionScreen(
     navController: NavHostController
 ) {
+    var isSheetOpened by rememberSaveable {
+        mutableStateOf(false)
+    }
     val transactionList = listOf(
         Transaction(
             company = "OOO Company",
@@ -166,7 +178,8 @@ fun AllTransactionsScreen(
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .padding(start = 4.dp)
-                    .size(24.dp),
+                    .size(24.dp)
+                    .clickable { isSheetOpened = true },
             )
         }
         Card(
@@ -183,7 +196,10 @@ fun AllTransactionsScreen(
                     .fillMaxWidth()
             ) {
                 itemsIndexed(transactionList) { _, transaction ->
-                    TransactionCard(transaction = transaction)
+                    TransactionCard(
+                        transaction = transaction,
+                        navController = navController
+                    )
                     HorizontalDivider(
                         color = LightGrey,
                         thickness = 1.dp,
@@ -191,6 +207,97 @@ fun AllTransactionsScreen(
                             .padding(start = 16.dp, end = 16.dp)
                     )
                 }
+            }
+        }
+    }
+    if (isSheetOpened) {
+        ModalBottomSheet(
+            onDismissRequest = { isSheetOpened = false },
+            containerColor = Color.Black
+        ) {
+            Column(
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.filter_by_date),
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 28.sp
+                )
+                Text(
+                    text = stringResource(id = R.string.start_date),
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+                Row(
+                    modifier = Modifier
+                        .border(
+                            color = LightGrey,
+                            width = 1.dp,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.select_start_date),
+                        color = LightGrey,
+                        fontSize = 16.sp
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.calendar),
+                        contentDescription = "calendarIcon",
+                        colorFilter = ColorFilter.tint(Color.White),
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+                Text(
+                    text = stringResource(id = R.string.end_date),
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+                Row(
+                    modifier = Modifier
+                        .border(
+                            color = LightGrey,
+                            width = 1.dp,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.select_end_date),
+                        color = LightGrey,
+                        fontSize = 16.sp
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.calendar),
+                        contentDescription = "calendarIcon",
+                        colorFilter = ColorFilter.tint(Color.White),
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+            }
+            HorizontalDivider(
+                color = LightGrey,
+                thickness = 1.dp,
+                modifier = Modifier
+                    .padding(top = 16.dp, bottom = 16.dp)
+            )
+            BlueButton(
+                text = stringResource(id = R.string.okay),
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp, bottom = 16.dp)
+                    .fillMaxWidth()
+            ) {
+                isSheetOpened = false
             }
         }
     }

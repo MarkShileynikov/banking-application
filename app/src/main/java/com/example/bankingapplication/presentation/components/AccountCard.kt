@@ -1,6 +1,7 @@
 package com.example.bankingapplication.presentation.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,11 +25,14 @@ import com.example.bankingapplication.ui.theme.Grey
 import com.example.bankingapplication.ui.theme.LightGrey
 
 @Composable
-fun AccountCard() {
+fun AccountCard(
+    openBottomSheet: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 16.dp),
+            .padding(top = 16.dp)
+            .clickable { openBottomSheet() },
         colors = CardDefaults.cardColors(
             containerColor = Grey
         ),
