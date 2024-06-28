@@ -37,9 +37,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.example.bankingapplication.R
-import com.example.bankingapplication.domain.entity.Transaction
+import com.example.bankingapplication.data.repository.getTransactionsList
 import com.example.bankingapplication.presentation.components.BlueButton
 import com.example.bankingapplication.presentation.components.TransactionCard
 import com.example.bankingapplication.ui.theme.Grey
@@ -48,97 +48,11 @@ import com.example.bankingapplication.ui.theme.LightGrey
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllTransactionScreen(
-    navController: NavHostController
+    navController: NavController
 ) {
     var isSheetOpened by rememberSaveable {
         mutableStateOf(false)
     }
-    val transactionList = listOf(
-        Transaction(
-            company = "OOO Company",
-            transactionNumber = "51213578",
-            date = "01.06.2024",
-            status = "Executed",
-            amount = "$10.90"
-        ),
-        Transaction(
-            company = "OOO Company2",
-            transactionNumber = "51213578",
-            date = "05.06.2024",
-            status = "Declined",
-            amount = "$11.09"
-        ),
-        Transaction(
-            company = "OOO Company3",
-            transactionNumber = "51213578",
-            date = "09.06.2024",
-            status = "In progress",
-            amount = "$13.09"
-        ),
-        Transaction(
-            company = "OOO Company4",
-            transactionNumber = "51213578",
-            date = "01.07.2024",
-            status = "Executed",
-            amount = "$15.09"
-        ),
-        Transaction(
-            company = "OOO Company5",
-            transactionNumber = "512132578",
-            date = "09.06.2023",
-            status = "Declined",
-            amount = "$18.09"
-        ),
-        Transaction(
-            company = "OOO Company6",
-            transactionNumber = "51213578",
-            date = "09.01.2024",
-            status = "In progress",
-            amount = "$9.09"
-        ),
-        Transaction(
-            company = "OOO Company",
-            transactionNumber = "51213578",
-            date = "01.06.2024",
-            status = "Executed",
-            amount = "$10.90"
-        ),
-        Transaction(
-            company = "OOO Company2",
-            transactionNumber = "51213578",
-            date = "05.06.2024",
-            status = "Declined",
-            amount = "$11.09"
-        ),
-        Transaction(
-            company = "OOO Company3",
-            transactionNumber = "51213578",
-            date = "09.06.2024",
-            status = "In progress",
-            amount = "$13.09"
-        ),
-        Transaction(
-            company = "OOO Company4",
-            transactionNumber = "51213578",
-            date = "01.07.2024",
-            status = "Executed",
-            amount = "$15.09"
-        ),
-        Transaction(
-            company = "OOO Company5",
-            transactionNumber = "512132578",
-            date = "09.06.2023",
-            status = "Declined",
-            amount = "$18.09"
-        ),
-        Transaction(
-            company = "OOO Company6",
-            transactionNumber = "51213578",
-            date = "09.01.2024",
-            status = "In progress",
-            amount = "$9.09"
-        )
-    )
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -195,11 +109,10 @@ fun AllTransactionScreen(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                itemsIndexed(transactionList) { _, transaction ->
+                itemsIndexed(getTransactionsList()) { _, transaction ->
                     TransactionCard(
                         transaction = transaction,
-                        navController = navController
-                    )
+                        navController = navController)
                     HorizontalDivider(
                         color = LightGrey,
                         thickness = 1.dp,

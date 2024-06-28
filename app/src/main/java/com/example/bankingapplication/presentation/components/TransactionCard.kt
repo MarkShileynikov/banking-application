@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.example.bankingapplication.R
 import com.example.bankingapplication.domain.entity.Transaction
 import com.example.bankingapplication.ui.theme.ArrowGrey
@@ -31,7 +31,7 @@ import com.example.bankingapplication.ui.theme.LightGrey
 @Composable
 fun TransactionCard(
     transaction: Transaction,
-    navController: NavHostController
+    navController: NavController
 ) {
     Row(
         modifier = Modifier
