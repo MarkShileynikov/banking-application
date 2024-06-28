@@ -30,9 +30,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.example.bankingapplication.R
-import com.example.bankingapplication.domain.entity.Transaction
+import com.example.bankingapplication.data.repository.getRecentTransactions
 import com.example.bankingapplication.presentation.components.AccountCard
 import com.example.bankingapplication.presentation.components.TransactionCard
 import com.example.bankingapplication.ui.theme.Blue
@@ -42,38 +42,8 @@ import com.example.bankingapplication.ui.theme.LightGrey
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RecentTransactionsScreen(
-    navController: NavHostController
+    navController: NavController
 ) {
-    val transactionList = listOf(
-        Transaction(
-            company = "OOO Company",
-            transactionNumber = "51213578",
-            date = "01.06.2024",
-            status = "Executed",
-            amount = "$10.90"
-        ),
-        Transaction(
-            company = "OOO Company2",
-            transactionNumber = "51213578",
-            date = "05.06.2024",
-            status = "Declined",
-            amount = "$11.09"
-        ),
-        Transaction(
-            company = "OOO Company3",
-            transactionNumber = "51213578",
-            date = "09.06.2024",
-            status = "In progress",
-            amount = "$13.09"
-        ),
-        Transaction(
-            company = "OOO Company4",
-            transactionNumber = "51213578",
-            date = "01.07.2024",
-            status = "Executed",
-            amount = "$15.09"
-        )
-    )
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -141,8 +111,7 @@ fun RecentTransactionsScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    val lastFourTransactions = transactionList.takeLast(4)
-                    lastFourTransactions.forEach { transaction ->
+                    getRecentTransactions().forEach { transaction ->
                         TransactionCard(transaction = transaction)
                         HorizontalDivider(
                             color = LightGrey,
