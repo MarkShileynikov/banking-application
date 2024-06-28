@@ -47,7 +47,7 @@ fun RecentTransactionsScreen(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { },
+                onClick = { navController.navigate("add_transactions_screen") },
                 containerColor = Blue,
                 shape = CircleShape
             ) {
