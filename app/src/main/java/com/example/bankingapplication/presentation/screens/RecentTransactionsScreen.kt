@@ -153,9 +153,9 @@ fun RecentTransactionsScreen(
                     fontWeight = FontWeight.Bold,
                     fontSize = 28.sp
                 )
-                AccountCard{}
-                AccountCard{}
-                AccountCard{}
+                AccountCard {}
+                AccountCard {}
+                AccountCard {}
             }
         }
     }

@@ -37,15 +37,28 @@ fun EditTransactionScreen(
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         )
-        InputField(header = stringResource(id = R.string.transaction_was_applied_in), inputText = transaction.company)
-        InputField(header = stringResource(id = R.string.transaction_number), inputText = transaction.transactionNumber)
-        InputField(header = stringResource(id = R.string.date), inputText =  transaction.date)
-        InputField(header = stringResource(id = R.string.transaction_status), inputText = transaction.status)
-        InputField(header = stringResource(id = R.string.amount), inputText = transaction.amount)
+        InputField(
+            header = stringResource(id = R.string.transaction_was_applied_in),
+            inputText = transaction.company
+        )
+        InputField(
+            header = stringResource(id = R.string.transaction_number),
+            inputText = transaction.transactionNumber
+        )
+        InputField(header = stringResource(id = R.string.date), inputText = transaction.date)
+        InputField(
+            header = stringResource(id = R.string.transaction_status),
+            inputText = transaction.transactionStatus
+        )
+        InputField(
+            header = stringResource(id = R.string.amount),
+            inputText = "$${transaction.amount}"
+        )
         BlueButton(
             text = stringResource(id = R.string.okay),
             modifier = Modifier
                 .padding(top = 24.dp)
-                .fillMaxWidth()) {}
+                .fillMaxWidth()
+        ) {}
     }
 }

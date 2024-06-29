@@ -112,7 +112,8 @@ fun AllTransactionScreen(
                 itemsIndexed(getTransactionsList()) { _, transaction ->
                     TransactionCard(
                         transaction = transaction,
-                        navController = navController)
+                        navController = navController
+                    )
                     HorizontalDivider(
                         color = LightGrey,
                         thickness = 1.dp,

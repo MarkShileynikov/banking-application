@@ -32,6 +32,10 @@ fun SetNavigation() {
         composable(
             route = "edit_transaction_screen/{company}/{number}/{date}/{status}/{amount}",
             arguments = listOf(
+                navArgument("id") {
+                    type = NavType.IntType
+                    defaultValue = 0
+                },
                 navArgument("company") {
                     type = NavType.StringType
                     defaultValue = ""
@@ -48,27 +52,23 @@ fun SetNavigation() {
                     type = NavType.StringType
                     defaultValue = ""
                 },
-                navArgument("amount") {
-                    type = NavType.StringType
-                    defaultValue = ""
-                },
             )
         ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("id") ?: 0
             val company = backStackEntry.arguments?.getString("company") ?: ""
             val number = backStackEntry.arguments?.getString("number") ?: ""
             val date = backStackEntry.arguments?.getString("date") ?: ""
             val status = backStackEntry.arguments?.getString("status") ?: ""
-            val amount = backStackEntry.arguments?.getString("amount") ?: ""
             EditTransactionScreen(
                 transaction = Transaction(
+                    id = id,
                     company = company,
                     transactionNumber = number,
                     date = date,
-                    status = status,
-                    amount = amount
+                    transactionStatus = status,
+                    amount = 10.99
                 )
             )
         }
-
     }
 }
