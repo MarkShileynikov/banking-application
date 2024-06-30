@@ -2,6 +2,7 @@ package com.example.bankingapplication.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,9 +17,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.bankingapplication.R
 import com.example.bankingapplication.domain.entity.Transaction
 import com.example.bankingapplication.ui.theme.ArrowGrey
@@ -26,11 +29,23 @@ import com.example.bankingapplication.ui.theme.Grey
 import com.example.bankingapplication.ui.theme.LightGrey
 
 @Composable
-fun TransactionCard(transaction: Transaction) {
+fun TransactionCard(
+    transaction: Transaction,
+    navController: NavController
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Grey),
+            .background(Grey)
+            .clickable {
+                navController.navigate(
+                    route = "edit_transaction_screen/" +
+                            "${transaction.company}/" +
+                            "${transaction.transactionNumber}/" +
+                            "${transaction.date}/${transaction.status}/" +
+                            transaction.amount
+                )
+            },
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(
@@ -50,9 +65,9 @@ fun TransactionCard(transaction: Transaction) {
                 fontWeight = FontWeight.Bold,
             )
             val color = when (transaction.status) {
-                "Executed" -> Color.Green
-                "Declined" -> Color.Red
-                "In progress" -> Color.Yellow
+                stringResource(id = R.string.executed) -> Color.Green
+                stringResource(id = R.string.declined) -> Color.Red
+                stringResource(id = R.string.in_progress) -> Color.Yellow
                 else -> Color.White
             }
             Text(

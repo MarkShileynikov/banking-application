@@ -17,12 +17,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,11 +45,15 @@ import com.example.bankingapplication.ui.theme.Blue
 import com.example.bankingapplication.ui.theme.Grey
 import com.example.bankingapplication.ui.theme.LightGrey
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RecentTransactionsScreen(
     navController: NavController
 ) {
+    var isSheetOpened by rememberSaveable {
+        mutableStateOf(false)
+    }
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -72,7 +82,9 @@ fun RecentTransactionsScreen(
                 fontWeight = FontWeight.Bold,
                 text = stringResource(id = R.string.account)
             )
-            AccountCard()
+            AccountCard {
+                isSheetOpened = true
+            }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -112,7 +124,10 @@ fun RecentTransactionsScreen(
                         .fillMaxWidth()
                 ) {
                     getRecentTransactions().forEach { transaction ->
-                        TransactionCard(transaction = transaction)
+                        TransactionCard(
+                            transaction = transaction,
+                            navController = navController
+                        )
                         HorizontalDivider(
                             color = LightGrey,
                             thickness = 1.dp,
@@ -121,6 +136,26 @@ fun RecentTransactionsScreen(
                         )
                     }
                 }
+            }
+        }
+    }
+    if (isSheetOpened) {
+        ModalBottomSheet(
+            onDismissRequest = { isSheetOpened = false },
+            containerColor = Color.Black
+        ) {
+            Column(
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.select_the_account),
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 28.sp
+                )
+                AccountCard{}
+                AccountCard{}
+                AccountCard{}
             }
         }
     }

@@ -13,16 +13,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bankingapplication.R
+import com.example.bankingapplication.domain.entity.Transaction
 import com.example.bankingapplication.presentation.components.BlueButton
 import com.example.bankingapplication.presentation.components.InputField
 
-@Preview(showBackground = true)
 @Composable
-fun AddTransactionScreen() {
+fun EditTransactionScreen(
+    transaction: Transaction
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,11 +37,11 @@ fun AddTransactionScreen() {
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         )
-        InputField(header = stringResource(id = R.string.transaction_was_applied_in), inputText = "")
-        InputField(header = stringResource(id = R.string.transaction_number), inputText = "")
-        InputField(header = stringResource(id = R.string.date), inputText = "")
-        InputField(header = stringResource(id = R.string.transaction_status), inputText = "")
-        InputField(header = stringResource(id = R.string.amount), inputText = "")
+        InputField(header = stringResource(id = R.string.transaction_was_applied_in), inputText = transaction.company)
+        InputField(header = stringResource(id = R.string.transaction_number), inputText = transaction.transactionNumber)
+        InputField(header = stringResource(id = R.string.date), inputText =  transaction.date)
+        InputField(header = stringResource(id = R.string.transaction_status), inputText = transaction.status)
+        InputField(header = stringResource(id = R.string.amount), inputText = transaction.amount)
         BlueButton(
             text = stringResource(id = R.string.okay),
             modifier = Modifier
