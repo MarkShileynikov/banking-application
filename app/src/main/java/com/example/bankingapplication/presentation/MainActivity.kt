@@ -1,4 +1,4 @@
-package com.example.bankingapplication
+package com.example.bankingapplication.presentation
 
 import android.graphics.Color
 import android.os.Bundle

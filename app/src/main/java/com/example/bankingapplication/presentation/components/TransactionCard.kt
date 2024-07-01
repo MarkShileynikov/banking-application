@@ -42,7 +42,7 @@ fun TransactionCard(
                     route = "edit_transaction_screen/" +
                             "${transaction.company}/" +
                             "${transaction.transactionNumber}/" +
-                            "${transaction.date}/${transaction.status}/" +
+                            "${transaction.date}/${transaction.transactionStatus}/" +
                             transaction.amount
                 )
             },
@@ -64,14 +64,14 @@ fun TransactionCard(
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
             )
-            val color = when (transaction.status) {
+            val color = when (transaction.transactionStatus) {
                 stringResource(id = R.string.executed) -> Color.Green
                 stringResource(id = R.string.declined) -> Color.Red
                 stringResource(id = R.string.in_progress) -> Color.Yellow
                 else -> Color.White
             }
             Text(
-                text = transaction.status,
+                text = transaction.transactionStatus,
                 color = color,
                 fontSize = 12.sp,
             )
@@ -82,7 +82,7 @@ fun TransactionCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = transaction.amount,
+                text = "$${transaction.amount}",
                 color = Color.White,
                 fontSize = 16.sp,
             )

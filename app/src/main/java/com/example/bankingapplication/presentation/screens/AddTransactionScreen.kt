@@ -36,7 +36,10 @@ fun AddTransactionScreen() {
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         )
-        InputField(header = stringResource(id = R.string.transaction_was_applied_in), inputText = "")
+        InputField(
+            header = stringResource(id = R.string.transaction_was_applied_in),
+            inputText = ""
+        )
         InputField(header = stringResource(id = R.string.transaction_number), inputText = "")
         InputField(header = stringResource(id = R.string.date), inputText = "")
         InputField(header = stringResource(id = R.string.transaction_status), inputText = "")
@@ -45,6 +48,7 @@ fun AddTransactionScreen() {
             text = stringResource(id = R.string.okay),
             modifier = Modifier
                 .padding(top = 24.dp)
-                .fillMaxWidth()) {}
+                .fillMaxWidth()
+        ) {}
     }
 }
