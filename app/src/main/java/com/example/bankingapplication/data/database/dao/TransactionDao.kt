@@ -12,8 +12,11 @@ interface TransactionDao {
     suspend fun insert(transactionItem: TransactionItem)
 
     @Query("SELECT * FROM transactions")
-    fun getAllTransactions(): Flow<List<TransactionItem>>
+    fun fetchAllTransactions(): Flow<List<TransactionItem>>
 
     @Query("SELECT * FROM transactions WHERE id = :id")
-    fun getTransactionById(id: Int): Flow<TransactionItem?>
+    fun fetchTransactionById(id: Int): Flow<TransactionItem?>
+
+    @Query("SELECT * FROM transactions WHERE account_id = :accountId ORDER BY id DESC LIMIT 5")
+    fun fetchLastTransactions(accountId: Int): Flow<List<TransactionItem>>
 }

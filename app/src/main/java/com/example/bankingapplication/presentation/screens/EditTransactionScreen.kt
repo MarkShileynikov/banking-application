@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.bankingapplication.R
 import com.example.bankingapplication.domain.entity.Transaction
 import com.example.bankingapplication.presentation.components.BlueButton
@@ -22,7 +23,8 @@ import com.example.bankingapplication.presentation.components.InputField
 
 @Composable
 fun EditTransactionScreen(
-    transaction: Transaction
+    transaction: Transaction,
+    navController: NavController
 ) {
     Column(
         modifier = Modifier
@@ -39,29 +41,42 @@ fun EditTransactionScreen(
         )
         InputField(
             header = stringResource(id = R.string.transaction_was_applied_in),
-            inputText = transaction.company
+            inputText = transaction.company,
+            isClickable = false,
+            onValueChange = {}
         )
         InputField(
             header = stringResource(id = R.string.transaction_number),
-            inputText = transaction.transactionNumber
+            inputText = transaction.transactionNumber,
+            isClickable = false,
+            onValueChange = {}
         )
         InputField(
             header = stringResource(id = R.string.date),
-            inputText = transaction.date
+            inputText = transaction.date,
+            isClickable = false,
+            onValueChange = {}
         )
         InputField(
             header = stringResource(id = R.string.transaction_status),
-            inputText = transaction.transactionStatus
+            inputText = transaction.transactionStatus,
+            isClickable = false,
+            onValueChange = {}
         )
         InputField(
             header = stringResource(id = R.string.amount),
-            inputText = "$${transaction.amount}"
+            inputText = "$${transaction.amount}",
+            isClickable = false,
+            onValueChange = {}
         )
         BlueButton(
             text = stringResource(id = R.string.okay),
             modifier = Modifier
                 .padding(top = 24.dp)
-                .fillMaxWidth()
-        ) {}
+                .fillMaxWidth(),
+            enabled = true
+        ) {
+            navController.popBackStack()
+        }
     }
 }
