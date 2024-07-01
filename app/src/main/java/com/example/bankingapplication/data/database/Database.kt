@@ -9,6 +9,8 @@ import com.example.bankingapplication.data.database.entity.TransactionItem
 
 @Database(entities = [AccountItem::class, TransactionItem::class], version = 1)
 abstract class Database : RoomDatabase() {
+
     abstract val accountDao : AccountDao
+
     abstract val transactionDao : TransactionDao
 }
