@@ -45,7 +45,10 @@ fun EditTransactionScreen(
             header = stringResource(id = R.string.transaction_number),
             inputText = transaction.transactionNumber
         )
-        InputField(header = stringResource(id = R.string.date), inputText = transaction.date)
+        InputField(
+            header = stringResource(id = R.string.date),
+            inputText = transaction.date
+        )
         InputField(
             header = stringResource(id = R.string.transaction_status),
             inputText = transaction.transactionStatus
