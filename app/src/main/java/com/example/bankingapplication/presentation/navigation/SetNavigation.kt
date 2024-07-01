@@ -12,12 +12,14 @@ import com.example.bankingapplication.presentation.screens.AllTransactionScreen
 import com.example.bankingapplication.presentation.screens.EditTransactionScreen
 import com.example.bankingapplication.presentation.screens.RecentTransactionsScreen
 import com.example.bankingapplication.presentation.vm.AddTransactionViewModel
+import com.example.bankingapplication.presentation.vm.AllTransactionsViewModel
 import com.example.bankingapplication.presentation.vm.RecentTransactionsViewModel
 
 @Composable
 fun SetNavigation(
     recentTransactionsViewModel: RecentTransactionsViewModel,
-    addTransactionViewModel: AddTransactionViewModel
+    addTransactionViewModel: AddTransactionViewModel,
+    allTransactionsViewModel: AllTransactionsViewModel
 ) {
     val navController = rememberNavController()
     NavHost(
@@ -32,7 +34,10 @@ fun SetNavigation(
             )
         }
         composable("all_transactions_screen") {
-            AllTransactionScreen(navController)
+            AllTransactionScreen(
+                navController = navController,
+                viewModel = allTransactionsViewModel
+            )
         }
         composable("add_transactions_screen") {
             AddTransactionScreen(

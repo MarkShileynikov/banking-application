@@ -18,14 +18,7 @@ class TransactionRepositoryImpl @Inject constructor(
         val accountId = prefsDataSource.fetchCurrentUser()
         return transactionDao.fetchLastTransactions(accountId).map { transactions ->
             transactions.map { transaction ->
-                Transaction(
-                    id = transaction.id,
-                    company = transaction.company,
-                    transactionNumber = transaction.transactionNumber,
-                    date = transaction.date,
-                    transactionStatus = transaction.transactionStatus,
-                    amount = transaction.amount
-                )
+                transformToTransaction(transaction)
             }
         }
     }
@@ -46,5 +39,25 @@ class TransactionRepositoryImpl @Inject constructor(
             amount = amount
         )
         transactionDao.insert(transactionItem)
+    }
+
+    override suspend fun fetchAllTransactions(): Flow<List<Transaction>> {
+        val accountId = prefsDataSource.fetchCurrentUser()
+        return transactionDao.fetchAllTransactions(accountId).map {transactions ->
+            transactions.map { transaction ->
+                transformToTransaction(transaction)
+            }
+        }
+    }
+
+    private fun transformToTransaction(transactionItem: TransactionItem) : Transaction {
+        return Transaction(
+            id = transactionItem.id,
+            company = transactionItem.company,
+            transactionNumber = transactionItem.transactionNumber,
+            date = transactionItem.date,
+            transactionStatus = transactionItem.transactionStatus,
+            amount = transactionItem.amount
+        )
     }
 }
