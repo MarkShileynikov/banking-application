@@ -8,7 +8,7 @@ class PrefsDataSourceImpl @Inject constructor(private val context: Context) : Pr
         val prefs = context.getSharedPreferences(
             sessionPrefs, Context.MODE_PRIVATE
         )
-        return prefs.getBoolean(isFirstLaunchKey, false)
+        return prefs.getBoolean(isFirstLaunchKey, true)
     }
 
     override fun setFirstLaunch(isFirstLaunch: Boolean) {
@@ -35,7 +35,7 @@ class PrefsDataSourceImpl @Inject constructor(private val context: Context) : Pr
         val prefs = context.getSharedPreferences(
             sessionPrefs, Context.MODE_PRIVATE
         )
-        return prefs.getInt(userIdKey, 0)
+        return prefs.getInt(userIdKey, 1)
     }
 
     companion object {

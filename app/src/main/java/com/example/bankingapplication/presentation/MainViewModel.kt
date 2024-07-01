@@ -13,7 +13,8 @@ class MainViewModel @Inject constructor(
     context: Application,
     private val fillOutAccountsUseCase: FillOutAccountsUseCase
 ) : AndroidViewModel(context) {
-    init {
+
+    fun fillOutAccounts() {
         viewModelScope.launch {
             fillOutAccountsUseCase()
         }

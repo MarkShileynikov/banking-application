@@ -12,6 +12,7 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object DataSourceModule {
+
     @Provides
     fun providePrefsDataSource(@ApplicationContext appContext: Context): PrefsDataSource {
         return PrefsDataSourceImpl(appContext)
