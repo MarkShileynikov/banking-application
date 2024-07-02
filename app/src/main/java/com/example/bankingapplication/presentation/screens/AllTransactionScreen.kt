@@ -45,9 +45,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bankingapplication.R
-import com.example.bankingapplication.data.repository.getTransactionsList
 import com.example.bankingapplication.presentation.components.BlueButton
 import com.example.bankingapplication.presentation.components.TransactionCard
 import com.example.bankingapplication.presentation.vm.AllTransactionsViewModel
@@ -60,8 +60,9 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun AllTransactionScreen(
     navController: NavController,
-    viewModel: AllTransactionsViewModel
 ) {
+    val viewModel: AllTransactionsViewModel = hiltViewModel()
+
     var isSheetOpened by rememberSaveable {
         mutableStateOf(false)
     }

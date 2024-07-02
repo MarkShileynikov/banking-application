@@ -16,9 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
-    private val recentTransactionsViewModel: RecentTransactionsViewModel by viewModels()
-    private val addTransactionViewModel: AddTransactionViewModel by viewModels()
-    private val allTransactionsViewModel: AllTransactionsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +23,7 @@ class MainActivity : ComponentActivity() {
         window.statusBarColor = Color.BLACK
         setContent {
             BankingApplicationTheme {
-                SetNavigation(
-                    recentTransactionsViewModel = recentTransactionsViewModel,
-                    addTransactionViewModel = addTransactionViewModel,
-                    allTransactionsViewModel = allTransactionsViewModel
-                )
+                SetNavigation()
             }
         }
     }

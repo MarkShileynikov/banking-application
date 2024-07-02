@@ -57,11 +57,12 @@ import com.example.bankingapplication.ui.theme.LightGrey
 @Composable
 fun RecentTransactionsScreen(
     navController: NavController,
-    viewModel: RecentTransactionsViewModel
 ) {
     var isSheetOpened by rememberSaveable {
         mutableStateOf(false)
     }
+
+    val viewModel : RecentTransactionsViewModel = hiltViewModel()
 
     viewModel.fetchLastTransactions()
     viewModel.fetchCurrentAccount()

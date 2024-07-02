@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bankingapplication.R
 import com.example.bankingapplication.presentation.components.BlueButton
@@ -31,8 +31,9 @@ import java.util.Locale
 @Composable
 fun AddTransactionScreen(
     navController: NavController,
-    viewModel: AddTransactionViewModel = viewModel()
 ) {
+    val viewModel: AddTransactionViewModel = hiltViewModel()
+
     var company by remember { mutableStateOf("") }
     var transactionNumber by remember { mutableStateOf("") }
     var transactionStatus by remember { mutableStateOf("") }
