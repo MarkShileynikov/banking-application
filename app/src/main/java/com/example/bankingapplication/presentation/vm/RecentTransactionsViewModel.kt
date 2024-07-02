@@ -38,9 +38,6 @@ class RecentTransactionsViewModel @Inject constructor(
     fun fetchLastTransactions() {
         viewModelScope.launch {
             fetchLastTransactionsUseCase()
-                .onStart {
-                    transactionList.value = emptyList()
-                }
                 .catch {}
                 .collect { transactions ->
                     transactionList.value = transactions
@@ -51,9 +48,6 @@ class RecentTransactionsViewModel @Inject constructor(
     fun fetchAllAccounts() {
         viewModelScope.launch {
             fetchAllAccountsUseCase()
-                .onStart {
-                    accountList.value = emptyList()
-                }
                 .catch { }
                 .collect { accounts ->
                     accountList.value = accounts
@@ -65,17 +59,7 @@ class RecentTransactionsViewModel @Inject constructor(
         viewModelScope.launch {
             val accountId = prefsDataSource.fetchCurrentUser()
             fetchAccountByIdUseCase(accountId)
-                .onStart {
-                    selectedAccount.value = Account(
-                        id = 0,
-                        name = "",
-                        number = 0,
-                        cardNumber = ""
-                    )
-                }
-                .catch { e ->
-                    Log.e("RecentTransactionsViewModel", "Error fetching account", e)
-                }
+                .catch {}
                 .collect { account ->
                     selectedAccount.value = account
                 }

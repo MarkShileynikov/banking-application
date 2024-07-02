@@ -22,6 +22,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -37,22 +38,28 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bankingapplication.R
 import com.example.bankingapplication.data.repository.getTransactionsList
 import com.example.bankingapplication.presentation.components.BlueButton
 import com.example.bankingapplication.presentation.components.TransactionCard
+import com.example.bankingapplication.presentation.vm.AllTransactionsViewModel
 import com.example.bankingapplication.ui.theme.Grey
 import com.example.bankingapplication.ui.theme.LightGrey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllTransactionScreen(
-    navController: NavController
+    navController: NavController,
 ) {
+    val viewModel: AllTransactionsViewModel = hiltViewModel()
+
     var isSheetOpened by rememberSaveable {
         mutableStateOf(false)
     }
+    val transactions = viewModel.transactionsList.collectAsState(initial = emptyList())
+    viewModel.fetchAllTransactions()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -109,7 +116,7 @@ fun AllTransactionScreen(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                itemsIndexed(getTransactionsList()) { _, transaction ->
+                itemsIndexed(transactions.value) { _, transaction ->
                     TransactionCard(
                         transaction = transaction,
                         navController = navController

@@ -24,7 +24,7 @@ fun BlueButton(
         onClick = { onClick() },
         colors = ButtonDefaults.buttonColors(
             containerColor = Blue,
-            disabledContentColor = Blue
+            disabledContainerColor = Blue
         ),
         shape = RoundedCornerShape(8.dp),
         modifier = modifier,

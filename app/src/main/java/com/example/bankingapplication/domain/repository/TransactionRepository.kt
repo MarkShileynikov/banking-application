@@ -14,4 +14,6 @@ interface TransactionRepository {
         transactionStatus: String,
         amount: Double
     )
+
+    suspend fun fetchAllTransactions(): Flow<List<Transaction>>
 }
