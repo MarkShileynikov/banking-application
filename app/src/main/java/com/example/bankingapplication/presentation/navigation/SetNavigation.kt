@@ -11,9 +11,6 @@ import com.example.bankingapplication.presentation.screens.AddTransactionScreen
 import com.example.bankingapplication.presentation.screens.AllTransactionScreen
 import com.example.bankingapplication.presentation.screens.EditTransactionScreen
 import com.example.bankingapplication.presentation.screens.RecentTransactionsScreen
-import com.example.bankingapplication.presentation.vm.AddTransactionViewModel
-import com.example.bankingapplication.presentation.vm.AllTransactionsViewModel
-import com.example.bankingapplication.presentation.vm.RecentTransactionsViewModel
 
 @Composable
 fun SetNavigation() {

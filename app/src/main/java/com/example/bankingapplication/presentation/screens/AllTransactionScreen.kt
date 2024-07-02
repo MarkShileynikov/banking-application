@@ -66,8 +66,8 @@ fun AllTransactionScreen(
     var isSheetOpened by rememberSaveable {
         mutableStateOf(false)
     }
-    val transactions = viewModel.transactionsList.collectAsState(initial = emptyList())
-    viewModel.fetchAllTransactions()
+
+    val transactions = viewModel.filteredTransactionsList.collectAsState(initial = emptyList())
 
     var showStartDatePicker by rememberSaveable {
         mutableStateOf(false)
@@ -289,12 +289,14 @@ fun AllTransactionScreen(
             BlueButton(
                 text = stringResource(id = R.string.submit),
                 modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp, bottom = 16.dp)
+                    .padding(start = 8.dp, end = 8.dp, bottom = 32.dp)
                     .fillMaxWidth(),
                 enabled = true
             ) {
-                if ((startDate.isNotEmpty() && endDate.isNotEmpty())) {
+                if (viewModel.isDateRangeValid(startDate, endDate)) {
+                    viewModel.filterTransactions(startDate, endDate)
                     isSheetOpened = false
+                    borderColor = LightGrey
                 } else {
                     borderColor = Color.Red
                 }

@@ -24,9 +24,6 @@ import com.example.bankingapplication.R
 import com.example.bankingapplication.presentation.components.BlueButton
 import com.example.bankingapplication.presentation.components.InputField
 import com.example.bankingapplication.presentation.vm.AddTransactionViewModel
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @Composable
 fun AddTransactionScreen(
@@ -40,7 +37,7 @@ fun AddTransactionScreen(
     var amount by remember { mutableStateOf("") }
 
     val currentDate = remember {
-        SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
+        viewModel.getCurrentDate()
     }
 
     Column(

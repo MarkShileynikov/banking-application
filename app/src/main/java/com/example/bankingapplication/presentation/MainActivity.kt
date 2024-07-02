@@ -6,9 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import com.example.bankingapplication.presentation.navigation.SetNavigation
-import com.example.bankingapplication.presentation.vm.AddTransactionViewModel
-import com.example.bankingapplication.presentation.vm.AllTransactionsViewModel
-import com.example.bankingapplication.presentation.vm.RecentTransactionsViewModel
 import com.example.bankingapplication.ui.theme.BankingApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
