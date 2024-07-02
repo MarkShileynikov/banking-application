@@ -1,6 +1,7 @@
 package com.example.bankingapplication.presentation.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bankingapplication.R
+import com.example.bankingapplication.domain.entity.Account
 import com.example.bankingapplication.presentation.components.AccountCard
 import com.example.bankingapplication.presentation.components.TransactionCard
 import com.example.bankingapplication.presentation.vm.RecentTransactionsViewModel
@@ -46,7 +48,7 @@ import com.example.bankingapplication.ui.theme.Blue
 import com.example.bankingapplication.ui.theme.Grey
 import com.example.bankingapplication.ui.theme.LightGrey
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RecentTransactionsScreen(
@@ -56,8 +58,20 @@ fun RecentTransactionsScreen(
     var isSheetOpened by rememberSaveable {
         mutableStateOf(false)
     }
+
     viewModel.fetchLastTransactions()
+    viewModel.fetchCurrentAccount()
+
     val recentTransactionsList = viewModel.transactionList.collectAsState(initial = emptyList())
+    val accountList = viewModel.accountList.collectAsState(initial = emptyList())
+    val currentAccount = viewModel.selectedAccount.collectAsState(
+        initial = Account(
+            id = 0,
+            name = "",
+            number = 0,
+            cardNumber = ""
+        )
+    )
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -85,9 +99,13 @@ fun RecentTransactionsScreen(
                 fontWeight = FontWeight.Bold,
                 text = stringResource(id = R.string.account)
             )
-            AccountCard {
-                isSheetOpened = true
-            }
+            AccountCard(
+                account = currentAccount.value,
+                isSelected = false,
+                onClick = {
+                    isSheetOpened = true
+                }
+            )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -143,22 +161,33 @@ fun RecentTransactionsScreen(
         }
     }
     if (isSheetOpened) {
+        viewModel.fetchAllAccounts()
         ModalBottomSheet(
             onDismissRequest = { isSheetOpened = false },
             containerColor = Color.Black
         ) {
-            Column(
+            LazyColumn(
                 modifier = Modifier.padding(8.dp)
             ) {
-                Text(
-                    text = stringResource(id = R.string.select_the_account),
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 28.sp
-                )
-                AccountCard {}
-                AccountCard {}
-                AccountCard {}
+                stickyHeader {
+                    Text(
+                        text = stringResource(id = R.string.select_the_account),
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 28.sp
+                    )
+                }
+                items(accountList.value) { account ->
+                    AccountCard(
+                        account = account,
+                        isSelected = account.id == currentAccount.value.id,
+                        onClick = {
+                            viewModel.changeCurrentAccount(account.id)
+                            viewModel.selectedAccount.value = account
+                            isSheetOpened = false
+                        }
+                    )
+                }
             }
         }
     }

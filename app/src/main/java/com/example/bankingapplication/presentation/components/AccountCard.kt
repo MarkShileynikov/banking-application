@@ -21,20 +21,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.bankingapplication.R
+import com.example.bankingapplication.domain.entity.Account
+import com.example.bankingapplication.ui.theme.DarkBlue
 import com.example.bankingapplication.ui.theme.Grey
 import com.example.bankingapplication.ui.theme.LightGrey
 
 @Composable
 fun AccountCard(
-    openBottomSheet: () -> Unit
+    account: Account,
+    isSelected: Boolean,
+    onClick: () -> Unit,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp)
-            .clickable { openBottomSheet() },
+            .clickable { onClick() },
         colors = CardDefaults.cardColors(
-            containerColor = Grey
+            containerColor = if (isSelected) DarkBlue else Grey
         ),
         shape = RoundedCornerShape(16.dp),
     ) {
@@ -68,20 +72,19 @@ fun AccountCard(
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    text = "Saving Account"
+                    text = account.name
                 )
                 Text(
                     color = LightGrey,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    text = "9121214546875",
-
-                    )
+                    text = account.number.toString(),
+                )
                 Text(
                     color = LightGrey,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    text = "•••• 1234",
+                    text = account.cardNumber,
                 )
             }
             Image(painter = painterResource(id = R.drawable.arrow),

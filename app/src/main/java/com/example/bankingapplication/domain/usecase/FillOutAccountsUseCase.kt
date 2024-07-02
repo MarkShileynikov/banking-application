@@ -11,7 +11,7 @@ class FillOutAccountsUseCase @Inject constructor(
     suspend operator fun invoke() {
         if (prefsDataSource.isFirstLaunch()) {
             accountRepository.fillOutAccounts()
-            prefsDataSource.setFirstLaunch(true)
+            prefsDataSource.setFirstLaunch(false)
         }
     }
 }

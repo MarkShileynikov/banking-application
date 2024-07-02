@@ -12,10 +12,13 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
-    @Provides
-    fun provideAccountRepository(accountRepositoryImpl: AccountRepositoryImpl): AccountRepository = accountRepositoryImpl
 
     @Provides
-    fun provideTransactionRepository(transactionRepositoryImpl: TransactionRepositoryImpl): TransactionRepository = transactionRepositoryImpl
+    fun provideAccountRepository(accountRepositoryImpl: AccountRepositoryImpl): AccountRepository =
+        accountRepositoryImpl
+
+    @Provides
+    fun provideTransactionRepository(transactionRepositoryImpl: TransactionRepositoryImpl): TransactionRepository =
+        transactionRepositoryImpl
 
 }
