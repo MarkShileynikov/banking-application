@@ -209,7 +209,8 @@ fun AllTransactionScreen(
                 text = stringResource(id = R.string.okay),
                 modifier = Modifier
                     .padding(start = 8.dp, end = 8.dp, bottom = 16.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                enabled = true
             ) {
                 isSheetOpened = false
             }

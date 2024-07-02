@@ -12,5 +12,5 @@ interface AccountDao {
     suspend fun insert(accountItem: AccountItem)
 
     @Query("SELECT * FROM accounts")
-    fun getAllAccounts(): Flow<List<AccountItem>>
+    fun fetchAllAccounts(): Flow<List<AccountItem>>
 }

@@ -22,7 +22,9 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun InputField(
     header: String,
-    inputText: String
+    inputText: String,
+    isClickable: Boolean,
+    onValueChange: (String) -> Unit
 ) {
     var text by remember {
         mutableStateOf(inputText)
@@ -36,18 +38,25 @@ fun InputField(
     )
     OutlinedTextField(
         value = text,
-        onValueChange = { newText -> text = newText },
+        onValueChange = { newText ->
+            text = newText
+            onValueChange(newText)
+        },
+        enabled = isClickable,
         colors = TextFieldDefaults.outlinedTextFieldColors(
             unfocusedBorderColor = Color.White,
             focusedBorderColor = Color.White,
             cursorColor = Color.White,
             focusedTextColor = Color.White,
-            unfocusedTextColor = Color.White
+            unfocusedTextColor = Color.White,
+            disabledBorderColor = Color.White,
+            disabledTextColor = Color.White,
         ),
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.Transparent)
-            .padding(top = 4.dp)
+            .padding(top = 4.dp),
+        singleLine = true
     )
 }

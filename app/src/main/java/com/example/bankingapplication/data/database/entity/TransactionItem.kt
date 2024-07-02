@@ -8,6 +8,8 @@ import androidx.room.PrimaryKey
 data class TransactionItem(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    @ColumnInfo(name = "account_id")
+    val accountId: Int,
     val company: String,
     @ColumnInfo(name = "transaction_number")
     val transactionNumber: String,

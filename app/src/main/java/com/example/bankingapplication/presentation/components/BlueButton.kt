@@ -14,14 +14,21 @@ import androidx.compose.ui.unit.sp
 import com.example.bankingapplication.ui.theme.Blue
 
 @Composable
-fun BlueButton(text: String, modifier: Modifier, onClick: () -> Unit) {
+fun BlueButton(
+    text: String,
+    modifier: Modifier,
+    enabled: Boolean,
+    onClick: () -> Unit,
+) {
     Button(
         onClick = { onClick() },
         colors = ButtonDefaults.buttonColors(
-            containerColor = Blue
+            containerColor = Blue,
+            disabledContentColor = Blue
         ),
         shape = RoundedCornerShape(8.dp),
-        modifier = modifier
+        modifier = modifier,
+        enabled = enabled
     ) {
         Text(
             text = text,

@@ -9,10 +9,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
@@ -25,6 +25,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -38,9 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bankingapplication.R
-import com.example.bankingapplication.data.repository.getRecentTransactions
 import com.example.bankingapplication.presentation.components.AccountCard
 import com.example.bankingapplication.presentation.components.TransactionCard
+import com.example.bankingapplication.presentation.vm.RecentTransactionsViewModel
 import com.example.bankingapplication.ui.theme.Blue
 import com.example.bankingapplication.ui.theme.Grey
 import com.example.bankingapplication.ui.theme.LightGrey
@@ -49,11 +50,14 @@ import com.example.bankingapplication.ui.theme.LightGrey
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RecentTransactionsScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: RecentTransactionsViewModel
 ) {
     var isSheetOpened by rememberSaveable {
         mutableStateOf(false)
     }
+    viewModel.fetchLastTransactions()
+    val recentTransactionsList = viewModel.transactionList.collectAsState(initial = emptyList())
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -74,7 +78,6 @@ fun RecentTransactionsScreen(
                 .fillMaxSize()
                 .background(Color.Black)
                 .padding(16.dp)
-                .verticalScroll(rememberScrollState()),
         ) {
             Text(
                 color = Color.White,
@@ -119,11 +122,11 @@ fun RecentTransactionsScreen(
                 ),
                 shape = RoundedCornerShape(16.dp),
             ) {
-                Column(
+                LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    getRecentTransactions().forEach { transaction ->
+                    items(recentTransactionsList.value) { transaction ->
                         TransactionCard(
                             transaction = transaction,
                             navController = navController
