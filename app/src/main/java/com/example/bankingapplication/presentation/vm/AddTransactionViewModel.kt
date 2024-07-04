@@ -5,6 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.bankingapplication.domain.usecase.InsertTransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,5 +51,9 @@ class AddTransactionViewModel @Inject constructor(
                 amount = transactionAmount ?: 0.0
             )
         }
+    }
+
+    fun getCurrentDate() : String {
+        return SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
     }
 }

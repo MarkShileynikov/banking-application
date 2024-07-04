@@ -1,5 +1,6 @@
 package com.example.bankingapplication.presentation.screens
 
+import android.widget.CalendarView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,7 +15,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,28 +28,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bankingapplication.R
-import com.example.bankingapplication.data.repository.getTransactionsList
 import com.example.bankingapplication.presentation.components.BlueButton
 import com.example.bankingapplication.presentation.components.TransactionCard
 import com.example.bankingapplication.presentation.vm.AllTransactionsViewModel
 import com.example.bankingapplication.ui.theme.Grey
 import com.example.bankingapplication.ui.theme.LightGrey
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,8 +66,28 @@ fun AllTransactionScreen(
     var isSheetOpened by rememberSaveable {
         mutableStateOf(false)
     }
-    val transactions = viewModel.transactionsList.collectAsState(initial = emptyList())
-    viewModel.fetchAllTransactions()
+
+    val transactions = viewModel.filteredTransactionsList.collectAsState(initial = emptyList())
+
+    var showStartDatePicker by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var showEndDatePicker by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    var startDate by remember {
+        mutableStateOf("")
+    }
+
+    var endDate by remember {
+        mutableStateOf("")
+    }
+
+    var borderColor by remember {
+        mutableStateOf(LightGrey)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -137,7 +165,9 @@ fun AllTransactionScreen(
             containerColor = Color.Black
         ) {
             Column(
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier
+                    .padding(8.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
                 Text(
                     text = stringResource(id = R.string.filter_by_date),
@@ -154,17 +184,21 @@ fun AllTransactionScreen(
                 Row(
                     modifier = Modifier
                         .border(
-                            color = LightGrey,
+                            color = borderColor,
                             width = 1.dp,
                             shape = RoundedCornerShape(8.dp)
                         )
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(16.dp)
+                        .clickable {
+                            showStartDatePicker = true
+                            showEndDatePicker = false
+                        },
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(id = R.string.select_start_date),
+                        text = startDate.ifEmpty { stringResource(id = R.string.select_start_date) },
                         color = LightGrey,
                         fontSize = 16.sp
                     )
@@ -173,6 +207,24 @@ fun AllTransactionScreen(
                         contentDescription = "calendarIcon",
                         colorFilter = ColorFilter.tint(Color.White),
                         modifier = Modifier.size(16.dp)
+                    )
+                }
+                if (showStartDatePicker) {
+                    AndroidView(
+                        factory = { context -> CalendarView(context) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp, bottom = 8.dp)
+                            .clip(RoundedCornerShape(8.dp)),
+                        update = { calendarView ->
+                            calendarView.date = LocalDate.now().toEpochDay() * 24 * 60 * 60 * 1000
+                            calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+                                val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                                startDate = selectedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+                                showStartDatePicker = false
+                            }
+                            calendarView.setBackgroundColor(Color.White.toArgb())
+                        }
                     )
                 }
                 Text(
@@ -184,17 +236,21 @@ fun AllTransactionScreen(
                 Row(
                     modifier = Modifier
                         .border(
-                            color = LightGrey,
+                            color = borderColor,
                             width = 1.dp,
                             shape = RoundedCornerShape(8.dp)
                         )
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(16.dp)
+                        .clickable {
+                            showEndDatePicker = true
+                            showStartDatePicker = false
+                        },
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(id = R.string.select_end_date),
+                        text = endDate.ifEmpty { stringResource(id = R.string.select_end_date) },
                         color = LightGrey,
                         fontSize = 16.sp
                     )
@@ -206,6 +262,24 @@ fun AllTransactionScreen(
                     )
                 }
             }
+            if (showEndDatePicker) {
+                AndroidView(
+                    factory = { context -> CalendarView(context) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, bottom = 8.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    update = { calendarView ->
+                        calendarView.date = LocalDate.now().toEpochDay() * 24 * 60 * 60 * 1000
+                        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+                            val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                            endDate = selectedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+                            showEndDatePicker = false
+                        }
+                        calendarView.setBackgroundColor(Color.White.toArgb())
+                    }
+                )
+            }
             HorizontalDivider(
                 color = LightGrey,
                 thickness = 1.dp,
@@ -213,13 +287,19 @@ fun AllTransactionScreen(
                     .padding(top = 16.dp, bottom = 16.dp)
             )
             BlueButton(
-                text = stringResource(id = R.string.okay),
+                text = stringResource(id = R.string.submit),
                 modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp, bottom = 16.dp)
+                    .padding(start = 8.dp, end = 8.dp, bottom = 32.dp)
                     .fillMaxWidth(),
                 enabled = true
             ) {
-                isSheetOpened = false
+                if (viewModel.isDateRangeValid(startDate, endDate)) {
+                    viewModel.filterTransactions(startDate, endDate)
+                    isSheetOpened = false
+                    borderColor = LightGrey
+                } else {
+                    borderColor = Color.Red
+                }
             }
         }
     }

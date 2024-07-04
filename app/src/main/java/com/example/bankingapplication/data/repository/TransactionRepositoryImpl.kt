@@ -32,10 +32,10 @@ class TransactionRepositoryImpl @Inject constructor(
     ) {
         val transactionItem = TransactionItem(
             accountId = prefsDataSource.fetchCurrentUser(),
-            company = company,
-            transactionNumber = transactionNumber,
+            company = company.trim().replace("\\s+".toRegex(), " "),
+            transactionNumber = transactionNumber.trim().replace("\\s+".toRegex(), ""),
             date = date,
-            transactionStatus = transactionStatus,
+            transactionStatus = transactionStatus.trim().replace("\\s+".toRegex(), " "),
             amount = amount
         )
         transactionDao.insert(transactionItem)

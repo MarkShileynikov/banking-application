@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
@@ -74,6 +76,7 @@ fun RecentTransactionsScreen(
             cardNumber = ""
         )
     )
+
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -94,6 +97,7 @@ fun RecentTransactionsScreen(
                 .fillMaxSize()
                 .background(Color.Black)
                 .padding(16.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             Text(
                 color = Color.White,
@@ -142,11 +146,11 @@ fun RecentTransactionsScreen(
                 ),
                 shape = RoundedCornerShape(16.dp),
             ) {
-                LazyColumn(
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    items(recentTransactionsList.value) { transaction ->
+                    recentTransactionsList.value.forEach { transaction ->
                         TransactionCard(
                             transaction = transaction,
                             navController = navController
